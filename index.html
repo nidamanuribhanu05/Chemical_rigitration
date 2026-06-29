@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CDD Chemical Data Filler</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <main class="page">
+        <nav class="nav">
+            <div class="brand">
+                <span class="brand-icon">C</span>
+                <span>CDD Chemical Filler</span>
+            </div>
+            <span class="nav-pill">NIH PubChem Lookup</span>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">Excel to CDD Upload Helper</div>
+                <h1>Fill chemical details from CAS numbers in one upload</h1>
+                <p class="hero-text">
+                    Upload your Excel file with a <strong>Data Entry</strong> sheet.
+                    The app checks CAS numbers using NIH PubChem and creates a completed workbook with
+                    <strong>Data Entry</strong> and <strong>CDD Upload</strong> sheets.
+                </p>
+
+                <div class="trust-row">
+                    <div>
+                        <strong>2 sheets</strong>
+                        <span>Data Entry and CDD Upload</span>
+                    </div>
+                    <div>
+                        <strong>Blank safe</strong>
+                        <span>Unavailable fields stay empty</span>
+                    </div>
+                    <div>
+                        <strong>CDD ready</strong>
+                        <span>Structured output columns</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="upload-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Upload Excel file</h2>
+                        <p>Only .xlsx files are supported</p>
+                    </div>
+                    <span class="file-badge">Required: CAS Number</span>
+                </div>
+
+                <form action="/process" method="POST" enctype="multipart/form-data" class="upload-card">
+                    <label for="file" class="drop-zone">
+                        <span class="upload-icon">↑</span>
+                        <span class="drop-title">Choose your Excel file</span>
+                        <span class="drop-subtitle">Sheet name must be Data Entry</span>
+                        <input type="file" id="file" name="file" accept=".xlsx" required>
+                    </label>
+
+                    <button type="submit">
+                        Generate CDD Upload File
+                        <span>→</span>
+                    </button>
+                </form>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="message">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </section>
+
+        <section class="steps">
+            <div class="section-heading">
+                <span>How it works</span>
+                <h2>Simple workflow for chemical upload preparation</h2>
+            </div>
+
+            <div class="step-grid">
+                <article class="step-card">
+                    <span class="step-number">01</span>
+                    <h3>Prepare Data Entry</h3>
+                    <p>Add CAS numbers and any manual fields from Quartzy, vendor records, or lab notes.</p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">02</span>
+                    <h3>Fetch PubChem data</h3>
+                    <p>The app pulls available fields such as SMILES, formula, molecular weight, IUPAC name, and InChIKey.</p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">03</span>
+                    <h3>Download output</h3>
+                    <p>You receive a clean Excel file with Data Entry and CDD Upload sheets ready for review.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="details">
+            <div class="detail-card">
+                <h3>Input requirements</h3>
+                <ul>
+                    <li>File type must be .xlsx</li>
+                    <li>Sheet name must be <strong>Data Entry</strong></li>
+                    <li>Column <strong>CAS Number</strong> is required</li>
+                </ul>
+            </div>
+
+            <div class="detail-card">
+                <h3>Important check</h3>
+                <p>
+                    PubChem lookup can return a different salt form, parent compound, or synonym match.
+                    Always review SMILES, salt, and compound identity before final CDD upload.
+                </p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
